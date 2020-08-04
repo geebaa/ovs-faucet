@@ -1,0 +1,19 @@
+dps:
+    switch-1:
+        dp_id: 0x1
+        timeout: 7201
+        arp_neighbor_timeout: 3600
+        interfaces:
+            1:
+                native_vlan: 100
+            2:
+                native_vlan: 100
+            3:
+                native_vlan: 100
+            4:
+                native_vlan: 200
+            5:
+                native_vlan: 200
+vlans:
+    100:
+    200:
