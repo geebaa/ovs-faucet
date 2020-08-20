@@ -14,6 +14,11 @@ sudo apt-get install -y libcap-ng-utils
 sudo apt-get install -y unbound
 sudo apt install libtool-bin
 
+if kernel module is required to be build from source
+----------------------------------------------------
+./configure --with-linux=/lib/modules/$(uname -r)/build
+this translates to using the current installed kernel for example "/lib/modules/5.3.0-64-generic/build/"
+
 test ovs in sandbox environment
 -------------------------------
 ./boot.sh
@@ -21,6 +26,10 @@ make
 make sandbox or tutorial/ovs-sandbox
 ctrl+d or exit 
 
+where are the builds?
+----------------------
+kernel module (if configured) - datapath/linux/openvswitch.ko
+user space openvswitch -- vswitchd/ovs-vswitchd
 
 faucet from source with docker
 ------------------------------
