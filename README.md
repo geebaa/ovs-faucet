@@ -31,6 +31,44 @@ where are the builds?
 kernel module (if configured) - datapath/linux/openvswitch.ko
 user space openvswitch -- vswitchd/ovs-vswitchd
 
+Install the built openvswitch in the running system
+---------------------------------------------------
+sudo make install
+
+where to check installation?
+----------------------------
+ls -l /usr/local/sbin/ovs-vswitchd
+should give the time when this file was created for verification
+
+Install the kernel module built
+-------------------------------
+make modules_install
+seeing a lot of ssl errors ? like 
+
+"At main.c:160:
+- SSL error:02001002:system library:fopen:No such file or directory: ../crypto/bio/bss_file.c:72"
+
+This is because the kernel is configured with "CONFIG_MODULE_SIG=y" and therefore "make modules_install"
+is trying to sign the openvswitch.ko  and unable to do so since there are no certificates installed to sign with.
+nevertheless this is just a warning and proceed to the next step to load
+
+Load the kernel module
+----------------------
+sudo /sbin/modprobe openvswitch
+
+how to check if kernel module load suceeded ?
+---------------------------------------------
+/sbin/lsmod | grep "openvswitch" 
+should not be empty.. would show up something like below
+
+openvswitch           180224  0
+nf_nat                 40960  1 openvswitch
+nf_conntrack          139264  2 nf_nat,openvswitch
+nf_defrag_ipv6         24576  2 nf_conntrack,openvswitch
+udp_tunnel             16384  1 openvswitch
+libcrc32c              16384  3 nf_conntrack,nf_nat,openvswitch
+
+
 faucet from source with docker
 ------------------------------
 git clone https://github.com/faucetsdn/faucet.git
