@@ -68,6 +68,67 @@ nf_defrag_ipv6         24576  2 nf_conntrack,openvswitch
 udp_tunnel             16384  1 openvswitch
 libcrc32c              16384  3 nf_conntrack,nf_nat,openvswitch
 
+how to start openvswitch
+------------------------
+openvswitch consists of 2 code components ovsdb-server and ovs-vswitchd
+it has a utility script ovs-ctl to start the entire system in proper order
+because openvswitch was built from source and installed , one will have to
+pay attention to the folder structure
+first export the path to the proper folder
+
+export PATH=$PATH:/usr/local/share/openvswitch/scripts
+then a check with  "which ovs-ctl" should result in 
+
+"/usr/local/share/openvswitch/scripts/ovs-ctl"
+
+now a execution of "ovs-ctl start" throws up an error as below
+
+ * /usr/local/etc/openvswitch/conf.db does not exist
+ovsdb-tool: I/O error: /usr/local/etc/openvswitch/conf.db: failed to lock lockfile (Resource temporarily unavailable)
+ * Creating empty database /usr/local/etc/openvswitch/conf.db
+
+though it claims to create "/usr/local/etc/openvswitch/conf.db" but it would not since
+it has no permission to do so.
+
+manually create the required file using
+ovsdb-tool create /usr/local/etc/openvswitch/conf.db     vswitchd/vswitch.ovsschema
+
+now try starting using "ovs-ctl start" . it would fail again this time for permissions as below
+
+install: cannot create directory '/usr/local/var/log': Permission denied
+install: cannot create directory '/usr/local/var/run': Permission denied
+nice: cannot set niceness: Permission denied
+ * Starting ovsdb-server
+
+start using sudo as below
+ sudo /usr/local/share/openvswitch/scripts/ovs-ctl start
+ 
+ and you should see this start fine with below messages
+ 
+  * Starting ovsdb-server
+ * system ID not configured, please use --system-id
+ * Configuring Open vSwitch system IDs
+ * Starting ovs-vswitchd
+ * Enabling remote OVSDB managers
+
+how to check if everything is running ?
+--------------------------------------------------
+use the ovs-ctl status command and see the output below
+
+ovsdb-server is running with pid 26969
+ovs-vswitchd is running with pid 26990
+
+you should also find the logs for the above daemons as below
+
+/usr/local/var/log/openvswitch/ovs-vswitchd.log
+/usr/local/var/log/openvswitch/ovsdb-server.log
+
+what version are the daemons ?
+------------------------------
+use the command "ovs-ctl version"
+ovsdb-server (Open vSwitch) 2.14.90
+ovs-vswitchd (Open vSwitch) 2.14.90
+
 
 faucet from source with docker
 ------------------------------
