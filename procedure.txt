@@ -142,6 +142,22 @@ balasukr  27282  26662  0 09:11 pts/1    00:00:00 grep --color=auto ovs-vswitchd
 
 as can be seen from the above commands , the communication between the daemons happen via domain socket "/usr/local/var/run/openvswitch/db.sock"
 
+How to stop the daemons in order?
+---------------------------------
+
+use the command "sudo /usr/local/share/openvswitch/scripts/ovs-ctl stop"
+ * Exiting ovs-vswitchd (26990)
+ * Exiting ovsdb-server (26969)
+these events are logged in the respective log files as below
+
+/usr/local/var/log/openvswitch/ovs-vswitchd.log
+/usr/local/var/log/openvswitch/ovsdb-server.log
+
+watchout for these below logs 
+
+daemon_unix(monitor)|INFO|pid 26990 died, exit status 0, exiting
+daemon_unix(monitor)|INFO|pid 26969 died, exit satus 0, exiting
+
 
 faucet from source with docker
 ------------------------------
