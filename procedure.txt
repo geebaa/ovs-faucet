@@ -129,6 +129,19 @@ use the command "ovs-ctl version"
 ovsdb-server (Open vSwitch) 2.14.90
 ovs-vswitchd (Open vSwitch) 2.14.90
 
+what command line was used to start ovsdb-server and ovs-vswitchd
+-----------------------------------------------------------------
+ps -ef | grep ovsdb-server
+root      26968      1  0 08:35 ?        00:00:00 ovsdb-server: monitoring pid 26969 (healthy)
+root      26969  26968  0 08:35 ?        00:00:00 ovsdb-server /usr/local/etc/openvswitch/conf.db -vconsole:emer -vsyslog:err -vfile:info --remote=punix:/usr/local/var/run/openvswitch/db.sock --private-key=db:Open_vSwitch,SSL,private_key --certificate=db:Open_vSwitch,SSL,certificate --bootstrap-ca-cert=db:Open_vSwitch,SSL,ca_cert --no-chdir --log-file=/usr/local/var/log/openvswitch/ovsdb-server.log --pidfile=/usr/local/var/run/openvswitch/ovsdb-server.pid --detach --monitor
+
+ ps -ef | grep ovs-vswitchd
+root      26989      1  0 08:35 ?        00:00:00 ovs-vswitchd: monitoring pid 26990 (healthy)
+root      26990  26989  0 08:35 ?        00:00:00 ovs-vswitchd unix:/usr/local/var/run/openvswitch/db.sock -vconsole:emer -vsyslog:err -vfile:info --mlockall --no-chdir --log-file=/usr/local/var/log/openvswitch/ovs-vswitchd.log --pidfile=/usr/local/var/run/openvswitch/ovs-vswitchd.pid --detach --monitor
+balasukr  27282  26662  0 09:11 pts/1    00:00:00 grep --color=auto ovs-vswitchd
+
+as can be seen from the above commands , the communication between the daemons happen via domain socket "/usr/local/var/run/openvswitch/db.sock"
+
 
 faucet from source with docker
 ------------------------------
