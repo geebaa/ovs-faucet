@@ -1,4 +1,4 @@
 # ovs-faucet
 experiment with ovs + faucet
 
-pls go thru the procedures.txt
+pls go thru the procedure.txt
